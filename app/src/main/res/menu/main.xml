@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="Block"
+        android:orderInCategory="500"
+        android:onClick="block"
+        />
+    <item
+        android:title="Auth"
+        android:orderInCategory="100"
+        android:onClick="auth"
+        />
+    <item
+        android:title="Calendar"
+        android:orderInCategory="200"
+        android:onClick="calendar"
+        />
+    <item
+        android:title="Gallery"
+        android:orderInCategory="300"
+        android:onClick="gal"
+        />
+    <item
+        android:title="Camera"
+        android:orderInCategory="400"
+        android:onClick="camera"
+        />
+</menu>

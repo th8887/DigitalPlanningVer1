@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "682885486492",
+    "project_id": "digitalplanningver1",
+    "storage_bucket": "digitalplanningver1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682885486492:android:214dbbf3ccfdc0bc911a59",
+        "android_client_info": {
+          "package_name": "com.example.digitalplanningver1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682885486492-rf4ksfroe4r30sthes9ulavic835dr74.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmTten_89b-0Caz78xaXz9-BJdUAkQkt0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682885486492-rf4ksfroe4r30sthes9ulavic835dr74.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
