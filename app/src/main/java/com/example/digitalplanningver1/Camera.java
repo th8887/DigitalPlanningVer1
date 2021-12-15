@@ -4,6 +4,7 @@ import static android.provider.MediaStore.Images.Media.getBitmap;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -40,6 +41,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Camera extends AppCompatActivity {
     ImageView cam;
@@ -48,6 +51,9 @@ public class Camera extends AppCompatActivity {
     private StorageReference mStorageRef;
 
     private FirebaseAuth auth;
+
+    Uri photoUri;
+    final int CAMERA_REQUEST = 45;
 
 
 
@@ -63,28 +69,65 @@ public class Camera extends AppCompatActivity {
         auth= FirebaseAuth.getInstance();
     }
     public void openCam(View view) {
-        Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 101);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //startActivityForResult(intent, 101);
+
+        //if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        if (true) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(intent, CAMERA_REQUEST);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        photoUri = Uri.fromFile(image);
+        return image;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode== Activity.RESULT_OK){
-            if (requestCode==101){
-                onCaptureImage(data);
-            }
+        if (resultCode == RESULT_OK && requestCode == CAMERA_REQUEST) {
+                cam.setImageURI(photoUri);
         }
     }
 
-    private void onCaptureImage(Intent data){
-        Bitmap thumbnail= (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes= new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG,90, bytes);
-        bb=bytes.toByteArray();
-        cam.setImageBitmap(thumbnail);
-    }
+    /**
+     * private void onCaptureImage(Intent data){
+     *         Bitmap thumbnail= (Bitmap) data.getExtras().get("data");
+     *         ByteArrayOutputStream bytes= new ByteArrayOutputStream();
+     *         thumbnail.compress(Bitmap.CompressFormat.JPEG,90, bytes);
+     *         bb=bytes.toByteArray();
+     *         cam.setImageBitmap(thumbnail);
+     *     }
+      * @param
+     */
+
 
 
     public void uploadImage(View view) {
